@@ -17,22 +17,30 @@ class WebDriver:
         
         options = webdriver.ChromeOptions()
         options.add_experimental_option('prefs', {
-        "download.default_directory": "C:\\KOR\\automation-prodesp\\PDFs", #Change default directory for downloads
-        "download.prompt_for_download": False, #To auto download the file
-        "download.directory_upgrade": True,
-        "plugins.always_open_pdf_externally": True #It will not show PDF directly in chrome
+            "download.default_directory": "C:\\KOR\\automation-prodesp\\PDFs",
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "plugins.always_open_pdf_externally": True,
+            "safebrowsing.enabled": True,
+            "plugins.plugins_disabled": ["Chrome PDF Viewer"],
+            "plugins.always_open_pdf_externally": True,
+            "pdfjs.disabled": True,
+            "plugins.plugins_list": [{"enabled": False, "name": "Chrome PDF Viewer"}],
+            "profile.default_content_settings.popups": 0,
+            "profile.default_content_setting_values.automatic_downloads": 1
         })        
         servico = Service(ChromeDriverManager().install())
-        
+    
         self.driver = webdriver.Chrome(service=servico, options=options)
         self.wait = WebDriverWait(self.driver, 10)
-            
+        self.driver.implicitly_wait(500)
         
 
 class Drive:
     def __init__(self):
         self.driver = None
         self.wait = None
+    
     
     def search_company_name(self, name):
         webdrivers = WebDriver()
@@ -57,33 +65,37 @@ class Drive:
         sort_date = wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="content_lnkOrderByData"]')))
         sort_date.send_keys(Keys.ENTER)
         
-        elements = wait.until(EC.visibility_of_all_elements_located((By.XPATH, '//*[@id="content_dtgResultado_lblData_0"]')))
-        elements.click()
+        elements = wait.until(EC.visibility_of_all_elements_located((By.XPATH, '//*[@id="aCertificador"]')))
                 
         counter = 1
         for element in elements:
             link = element.get_attribute("href")
             links.append(link)
-            print(links)
+        # print(links)
 
+        for link in links:
+            driver.get(link)
+            driver.find_element(By.XPATH, '//*[@id="open-button"]')
+            time.sleep(500)
+            # response = requests.get(link)
+            print(link)
+        # print(response)
 
-            response = requests.get(link)
-
-            if response.status_code == 200:
-                ext = link.split('.')[-1]
+        #     if response.status_code == 200:
+        #         ext = link.split('.')[-1]
                 
-                cleaned_filename = sanitize_filename(f'{counter}.{ext}')
+        #         cleaned_filename = sanitize_filename(f'{counter}.{ext}')
                 
-                filename = os.path.join(folder_name, cleaned_filename)
-                with open(filename, 'wb') as f:
-                    for chunk in response.iter_content(chunk_size=1024):
-                        f.write(chunk)
+        #         filename = os.path.join(folder_name, cleaned_filename)
+        #         with open(filename, 'wb') as f:
+        #             for chunk in response.iter_content(chunk_size=1024):
+        #                 f.write(chunk)
                     
-                print('PDF baixado com sucesso:', cleaned_filename)
+        #         print('PDF baixado com sucesso:', cleaned_filename)
                 
-                counter += 1
-            else:
-                print('Falha ao baixar o PDF:', link)
+        #         counter += 1
+        #     else:
+        #         print('Falha ao baixar o PDF:', link)
 
 
 
