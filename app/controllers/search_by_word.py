@@ -1,4 +1,5 @@
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
@@ -6,6 +7,7 @@ from selenium.webdriver.common.keys import Keys
 from pathvalidate import sanitize_filename
 from selenium.webdriver.common.by import By
 from selenium import webdriver
+import urllib.request
 import requests
 import os
 import time
@@ -18,22 +20,23 @@ class WebDriver:
         options = webdriver.ChromeOptions()
         options.add_experimental_option('prefs', {
             "download.default_directory": "C:\\KOR\\automation-prodesp\\PDFs",
-            "download.prompt_for_download": False,
             "download.directory_upgrade": True,
-            "plugins.always_open_pdf_externally": True,
-            "safebrowsing.enabled": True,
             "plugins.plugins_disabled": ["Chrome PDF Viewer"],
             "plugins.always_open_pdf_externally": True,
             "pdfjs.disabled": True,
             "plugins.plugins_list": [{"enabled": False, "name": "Chrome PDF Viewer"}],
             "profile.default_content_settings.popups": 0,
-            "profile.default_content_setting_values.automatic_downloads": 1
+            "profile.default_content_setting_values.automatic_downloads": 1,
+            "download.extensions_to_open": "applications/pdf",
+            "download.prompt_for_download": False,
+            "safebrowsing.enabled": True,
+            
         })        
         servico = Service(ChromeDriverManager().install())
     
         self.driver = webdriver.Chrome(service=servico, options=options)
         self.wait = WebDriverWait(self.driver, 10)
-        self.driver.implicitly_wait(500)
+        self.driver.implicitly_wait(30)
         
 
 class Drive:
@@ -67,57 +70,95 @@ class Drive:
         
         elements = wait.until(EC.visibility_of_all_elements_located((By.XPATH, '//*[@id="aCertificador"]')))
                 
-        counter = 1
         for element in elements:
             link = element.get_attribute("href")
             links.append(link)
-        # print(links)
-
+ 
+        
+           #PESQUISAR SOBRE IFRAME
         for link in links:
             driver.get(link)
-            driver.find_element(By.XPATH, '//*[@id="open-button"]')
-            time.sleep(500)
-            # response = requests.get(link)
-            print(link)
-        # print(response)
+            
+            
+                            # Switch frame by id
+            driver.switch_to.frame('buttonframe')
 
-        #     if response.status_code == 200:
-        #         ext = link.split('.')[-1]
-                
-        #         cleaned_filename = sanitize_filename(f'{counter}.{ext}')
-                
-        #         filename = os.path.join(folder_name, cleaned_filename)
-        #         with open(filename, 'wb') as f:
-        #             for chunk in response.iter_content(chunk_size=1024):
-        #                 f.write(chunk)
+                # Now, Click on the button
+            driver.find_element(By.TAG_NAME, 'button').click()
+            time.sleep(5000)
+            
+                # switching to second iframe based on index
+            iframe = driver.find_elements(By.XPATH,'//*[@id="main-content"]/a')[1]
+            
+            
+            #driver.find_element(By.XPATH, '//*[@id="main-content"]/a')
+        print(iframe)    
+        
+        
+        
+        
+            # x_coord = 400
+            # y_coord = 200
+            # actions = ActionChains(driver)
+            # actions.move_by_offset(x_coord, y_coord).perform()
+            
+            # actions.click()
+            # time.sleep(3)
+            # #actions.click(element).send_keys(Keys.TAB).perform()
+            # actions.send_keys(Keys.ENTER)
+    
+            # actions.perform()
+        
+            
+        #print(driver)
+            
+        #     time.sleep(5)
+        #     time.sleep(5000)
+        #     drive.find_element(By.XPATH, '/html/body')
+        #     drive.send_keys(Keys.ENTER)
+        #     link_inside_xpath = drive.get_attribute("href")
+            
+        # print(link_inside_xpath)
+            
+            
+            
+            # link_down = wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="main-content"]/a')))
+
+            # download_link = link_down.get_attribute("href")
+            # print(download_link)
+                        
+            # link_down = wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="main-content"]/a')))
+            # link_down.get_attribute("href")
+            # links.append(link_down)
+            
+            
+            
+            
+            
+        
+        # for link in links:
+                                    
+        #     pdf_path = "C:\\KOR\\automation-prodesp\\PDFs\\nome_do_arquivo.pdf"
+        #     urllib.request.urlretrieve(link_down, pdf_path)
+
+        #     print("PDF baixado com sucesso!")
                     
-        #         print('PDF baixado com sucesso:', cleaned_filename)
+            
+        # print(link_down)
+            
+              
                 
-        #         counter += 1
-        #     else:
-        #         print('Falha ao baixar o PDF:', link)
-
+                
+                
+                
+                
+           #time.sleep(500)
+            # response = requests.get(link)
+        # print(driver)
+        
 
 
         
 drive = Drive()
 drive.search_company_name('"Azul Linhas Aéreas"')
 
-
-
-
-
-            #CÓDIGO PARA TENTAR PEGAR PDFS
-        # for url in links:
-        # # Abrir uma nova janela
-        #     driver.execute_script(f"window.open('{url}');")
-
-        #     # Trocar para a nova janela
-        #     driver.switch_to.window(driver.window_handles[-1])
-
-        #     # Acessar a URL
-        #     driver.get(url)
-
-        #     # Baixar o arquivo em formato binário
-        #     arquivo = driver.find_element_by_xpath("//a[@href='{}']".format(url))
-        #     arquivo.click()
