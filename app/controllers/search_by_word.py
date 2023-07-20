@@ -11,8 +11,6 @@ import urllib.request
 import requests
 import os
 import time
-# tenha 1 classe q cria o driver e o wait
-# tenha outra classe q faça o processo de acessar o site e coletar as informações
 
 class WebDriver:
     def __init__(self):
@@ -35,10 +33,8 @@ class WebDriver:
         servico = Service(ChromeDriverManager().install())
     
         self.driver = webdriver.Chrome(service=servico, options=options)
-        self.wait = WebDriverWait(self.driver, 10)
-        self.driver.implicitly_wait(30)
+        self.wait = WebDriverWait(self.driver, 10)     
         
-
 class Drive:
     def __init__(self):
         self.driver = None
@@ -75,90 +71,24 @@ class Drive:
             links.append(link)
  
         
-           #PESQUISAR SOBRE IFRAME
         for link in links:
             driver.get(link)
             
+            iframe = wait.until(EC.presence_of_element_located((By.NAME, 'GatewayCertificaPDF')))
+            driver.switch_to.frame(iframe)
             
-                            # Switch frame by id
-            driver.switch_to.frame('buttonframe')
+            main_content = driver.find_element(By.XPATH, '//*[@id="main-content"]/a')
+            
+            links_inside_main_content = main_content.find_elements(By.TAG_NAME, 'a')   
+                     
+            main_content.send_keys(Keys.ENTER)
 
-                # Now, Click on the button
-            driver.find_element(By.TAG_NAME, 'button').click()
-            time.sleep(5000)
+            for inner_link in links_inside_main_content:
+                print(inner_link.get_attribute("href"))
             
-                # switching to second iframe based on index
-            iframe = driver.find_elements(By.XPATH,'//*[@id="main-content"]/a')[1]
+            driver.switch_to.default_content()
             
-            
-            #driver.find_element(By.XPATH, '//*[@id="main-content"]/a')
-        print(iframe)    
-        
-        
-        
-        
-            # x_coord = 400
-            # y_coord = 200
-            # actions = ActionChains(driver)
-            # actions.move_by_offset(x_coord, y_coord).perform()
-            
-            # actions.click()
-            # time.sleep(3)
-            # #actions.click(element).send_keys(Keys.TAB).perform()
-            # actions.send_keys(Keys.ENTER)
-    
-            # actions.perform()
-        
-            
-        #print(driver)
-            
-        #     time.sleep(5)
-        #     time.sleep(5000)
-        #     drive.find_element(By.XPATH, '/html/body')
-        #     drive.send_keys(Keys.ENTER)
-        #     link_inside_xpath = drive.get_attribute("href")
-            
-        # print(link_inside_xpath)
-            
-            
-            
-            # link_down = wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="main-content"]/a')))
-
-            # download_link = link_down.get_attribute("href")
-            # print(download_link)
-                        
-            # link_down = wait.until(EC.visibility_of_element_located((By.XPATH, '//*[@id="main-content"]/a')))
-            # link_down.get_attribute("href")
-            # links.append(link_down)
-            
-            
-            
-            
-            
-        
-        # for link in links:
-                                    
-        #     pdf_path = "C:\\KOR\\automation-prodesp\\PDFs\\nome_do_arquivo.pdf"
-        #     urllib.request.urlretrieve(link_down, pdf_path)
-
-        #     print("PDF baixado com sucesso!")
-                    
-            
-        # print(link_down)
-            
-              
-                
-                
-                
-                
-                
-           #time.sleep(500)
-            # response = requests.get(link)
-        # print(driver)
-        
-
-
+        driver.quit()
         
 drive = Drive()
 drive.search_company_name('"Azul Linhas Aéreas"')
-
