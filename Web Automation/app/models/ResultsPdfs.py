@@ -4,17 +4,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 
+import time
+
+
 class ResultPdfs:
     def __init__(self):
         self.wait = WebDriver.wait
         self.driver = WebDriver.driver
     
-    def web_result(self, popups):
+    def web_result(self, links):
         links = []
-        popups = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/a[1]")))
-        popups.send_keys(Keys.ENTER)
-        popups = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[2]/div/a[1]")))
-        popups.send_keys(Keys.ENTER)
+        links_inside_iframe = []
+        search_box = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[1]/div/a[1]")))
+        search_box.send_keys(Keys.ENTER)
+        search_box = self.wait.until(EC.presence_of_element_located((By.XPATH, "/html/body/div[2]/div/a[1]")))
+        search_box.send_keys(Keys.ENTER)
         
         sort_date = self.wait.until(EC.presence_of_element_located((By.XPATH, '//*[@id="content_lnkOrderByData"]')))
         sort_date.send_keys(Keys.ENTER)
@@ -32,14 +36,7 @@ class ResultPdfs:
             self.driver.switch_to.frame(iframe)
             
             main_content = self.driver.find_element(By.XPATH, '//*[@id="main-content"]/a')
-            
-            links_inside_main_content = main_content.find_elements(By.TAG_NAME, 'a')   
-                     
-            main_content.send_keys(Keys.ENTER)
-
-            for inner_link in links_inside_main_content:
-                print(inner_link.get_attribute("href"))
-            
-            self.driver.switch_to.default_content()
-            
-        self.driver.quit()
+            links_inside_iframe.append(main_content.get_attribute("href"))
+                
+                        
+        return links_inside_iframe

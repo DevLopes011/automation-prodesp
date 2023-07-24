@@ -1,13 +1,14 @@
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
+import io
+import requests
 
 class WebDriver:
     options = webdriver.ChromeOptions()
     options.add_experimental_option('prefs', {
-        "download.default_directory": "C:\\KOR\\automation-prodesp\\PDFs",
-        "download.directory_upgrade": True,
         "plugins.plugins_disabled": ["Chrome PDF Viewer"],
         "plugins.always_open_pdf_externally": True,
         "pdfjs.disabled": True,
@@ -18,7 +19,8 @@ class WebDriver:
         "download.prompt_for_download": False,
         "safebrowsing.enabled": True,
     })
-    
+
     servico = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=servico, options=options)
     wait = WebDriverWait(driver, 10)
+    
