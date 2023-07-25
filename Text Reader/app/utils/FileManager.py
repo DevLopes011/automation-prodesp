@@ -15,7 +15,7 @@ class FileManager():
         # folder_path = f'{path.parent}\\PDFs'
         for filename in pdf_bytes:
             if filename.endswith('.pdf'):
-                # file_path = os.path.join(pdf_bytes, filename)
+                # file_path = os.pth.join(pdf_bytes, filename)
                 doc = fitz.open(pdf_bytes)
                 for page in range(doc.page_count)[:1]:
                     page = doc[page]
@@ -25,4 +25,4 @@ class FileManager():
     
 # fileManager = FileManager()
 # text = fileManager.open_pdf_files()
-# print(text)
+# print(text)a
