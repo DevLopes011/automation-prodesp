@@ -20,7 +20,7 @@ class WebDriver:
         "safebrowsing.enabled": True,
     })
 
-    servico = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=servico, options=options)
+    service = Service(ChromeDriverManager(version="114.0.5735.90").install())
+    driver = webdriver.Chrome(service=service, options=options)
     wait = WebDriverWait(driver, 10)
     
