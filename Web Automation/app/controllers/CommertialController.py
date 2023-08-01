@@ -27,6 +27,6 @@ class CommertialController:
         self.driver.quit()
         s3_uploader.new_folder_s3(nome_bucket_s3, name)
         for i, content in enumerate(pdf_bytes, start=1):
-            chave_no_s3 = f"{name}{i}.pdf"  
+            chave_no_s3 = f"pasta-azul/taltal{name}{i}.pdf"  
             s3_uploader.upload_to_s3(content, nome_bucket_s3, chave_no_s3)
 

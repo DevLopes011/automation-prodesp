@@ -2,15 +2,6 @@ resource "aws_s3_bucket" "prodesp_bucket" {
   bucket = "my-tf-prodesp-bucket"
 }
 
-resource "aws_s3_bucket" "prodesp_azul" {
-  bucket = "Azul-Junta-Comercial"
-}
-
-resource "aws_s3_bucket" "prodesp_riachuelo" {
-  bucket = "Riachuelo-Junta-Comercial"
-}
-
-
 resource "aws_s3_bucket_ownership_controls" "prodesp_bucket" {
   bucket = aws_s3_bucket.prodesp_bucket.id
   rule {
@@ -35,4 +26,13 @@ resource "aws_s3_bucket_acl" "prodesp_bucket_acl" {
 
   bucket = aws_s3_bucket.prodesp_bucket.id
   acl    = "private"
+}
+
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket = aws_s3_bucket.bucket.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.lambda.arn
+    events              = ["s3:ObjectCreated:*"]
+  }
 }
