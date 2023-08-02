@@ -1,4 +1,7 @@
 from models.FileManager import FileManager
+from uuid import uuid4
+
+my_uuid = uuid4()
 
 class CommertialController:
     def run(self, pdfs_directory, output_file):
@@ -15,14 +18,12 @@ class CommertialController:
             while page_num < num_pages:  
                 page = pdf_document[page_num]
                 texto_pagina = page.get_text()
-                texto_completo += texto_pagina
-
+                texto_completo += texto_pagina            
                 nires_encontrados = fileManager.extrair_nires(texto_completo)
                 numeros_alteracao = fileManager.extrair_numeros_alteracao(texto_completo)
                 motivos = fileManager.extrair_motivos(texto_completo)
 
                 if nires_encontrados and numeros_alteracao and motivos:
-                    # Todas as informações foram encontradas, podemos sair do laço
                     break
 
                 page_num += 1

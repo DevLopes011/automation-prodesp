@@ -1,1 +1,7 @@
 NIREs, Números de Alteração e Motivos encontrados:
+NIRE: 35300190998, Número de Alteração: 282179/23-9, Motivo: ('283650/23-0', 'CTEEP ')
+NIRE: 35300190998, Número de Alteração: 282180/23-0, Motivo: ('283651/23-4', 'CTEEP ')
+NIRE: 35300191005, Número de Alteração: 284296/23-5, Motivo: ('283817/23-9', 'EDP ')
+NIRE: 35300191005, Número de Alteração: 284297/23-9, Motivo: ('283818/23-2', 'EDP ')
+NIRE: 35300192559, Número de Alteração: 283728/23-1, Motivo: ('284031/23-9', 'JUMIL-')
+NIRE: 35300192559, Número de Alteração: 283729/23-5, Motivo: ('284032/23-2', 'JUMIL-')

@@ -15,7 +15,8 @@ class FileManager:
 
     @staticmethod
     def extrair_nires(texto):
-        padrao_nire = r"PATTERN_NIRE"
+        # Criar o padrão de expressão regular a partir dos PATTERN_NIRES
+        padrao_nire = r"\b\d{11}\b"
         nires_encontrados = re.findall(padrao_nire, texto)
         return nires_encontrados
     
@@ -30,6 +31,3 @@ class FileManager:
         padrao_numeros_alteracao = r"N\.\sDA\sALTERACAO:\s(\d{6}/\d{2}-\d)\b"
         numeros_alteracao_encontrados = re.findall(padrao_numeros_alteracao, texto)
         return numeros_alteracao_encontrados
-
-# fileManager = FileManager()
-# fileManager.extrair_nires()
