@@ -13,20 +13,21 @@ class AwsManager:
         # self.bucket_name_input = os.environ.get("BUCKET_NAME_INPUT")
         pass
         
-    def upload_dynamo (self):
+    def upload_dynamo (self, uuid, nires_encontrado, numeros_alteracao, motivos):
         boto3.setup_default_session(profile_name="ah")
         dynamodb_client = boto3.client("dynamodb")
         table_name = "automations"
         response = dynamodb_client.put_item(
             TableName=table_name,
             Item={
-                "order_id": {"S": "ord1234"},
-                "order_date": {"S": "2022-08-03"},
-                "user_email": {"S": "test@example.com"},
-                "amount": {"N": "120"},
+                "order_id": {"S": uuid},
+                "nires_encontrados": {"L": nires_encontrado},
+                "numeros_alteracao": {"L": numeros_alteracao},
+                "motivos": {"L": motivos},
             },
         )
         print(response)
+        return response
         
-awsManager = AwsManager()
-awsManager.upload_dynamo()
+# awsManager = AwsManager()
+# awsManager.upload_dynamo()

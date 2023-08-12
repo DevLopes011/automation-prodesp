@@ -3,8 +3,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium import webdriver
-import io
-import requests
 
 class WebDriver:
     options = webdriver.ChromeOptions()
@@ -23,4 +21,3 @@ class WebDriver:
     service = Service(ChromeDriverManager(version="114.0.5735.90").install())
     driver = webdriver.Chrome(service=service, options=options)
     wait = WebDriverWait(driver, 10)
-    
