@@ -40,9 +40,15 @@ class CommertialController:
             # print(matchs)
             data_list = fileManager.parse_text(matchs)
 
+<<<<<<< HEAD
             for nire_cli in data_list:
                 if nire_cli["NIRE"] in nires_especificos:
                     result = nire_cli
+=======
+            for nire_client in data_list:
+                if nire_client["NIRE"] in nires_especificos:
+                    result = nire_client
+>>>>>>> 37715ef3f56c5192313612bcd2b5d4acedd81337
                     print("Resultado para o NIRE específico:", result)
                 
             

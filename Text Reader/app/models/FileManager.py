@@ -35,11 +35,20 @@ class FileManager:
             if match:
                 nire, num_alteracao, empresa_num, motivo  = match.groups()
                 if empresa_num is not None:
+<<<<<<< HEAD
                     num_alteracao += f"-{empresa_num}"
                 data_dict = {
                     "NIRE": nire.strip(),
                     "N. DA ALTERACAO": num_alteracao.strip(),
                     # "Empresa": empresa.strip(),
+=======
+                    num_alteracao += f"{empresa_num}"
+                    empresa_num += motivo
+                data_dict = {
+                    "NIRE": nire.strip(),
+                    "N. DA ALTERACAO": num_alteracao.strip(),
+                    "Empresa": empresa_num.strip(),
+>>>>>>> 37715ef3f56c5192313612bcd2b5d4acedd81337
                     "Motivo": motivo.strip()
                 }
                 data_list.append(data_dict)
