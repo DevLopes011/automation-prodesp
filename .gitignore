@@ -209,4 +209,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 
+#Arquivos pdf
+*.pdf
+
 # End of https://www.toptal.com/developers/gitignore/api/python,terraform
